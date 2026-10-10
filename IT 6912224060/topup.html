@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เติมเงิน - DevHub</title>
+    <style>
+        body { font-family: 'Consolas', 'Courier New', monospace, sans-serif; margin: 0; padding: 0; color: #e0e0e0; background-color: transparent; }
+        #code-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background-color: #0b111a; pointer-events: none; }
+        .code-stream { position: absolute; top: -100px; font-size: 1.2rem; color: rgba(0, 255, 100, 0.4); white-space: nowrap; animation: fall-stream linear infinite; }
+        @keyframes fall-stream { to { transform: translateY(110vh); } }
+
+        header { background-color: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px); padding: 1.5rem 2rem; border-bottom: 2px solid #00ff66; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; color: #00ff66; font-size: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; margin-left: 20px; font-size: 1.1rem; }
+        nav a:hover { color: #00ff66; }
+
+        .topup-container { max-width: 450px; margin: 40px auto; padding: 30px; background-color: rgba(30, 41, 59, 0.7); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
+        h2 { color: #fff; margin-bottom: 10px; }
+        .balance-box { background: rgba(0,0,0,0.4); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #00ff66; }
+        .balance-box span { color: #00ff66; font-size: 1.5rem; font-weight: bold; }
+        
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; color: #a0a0a0; font-size: 0.9rem; }
+        .form-group select, .form-group input { width: 100%; padding: 10px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2); border-radius: 5px; color: #fff; box-sizing: border-box; font-family: inherit; }
+        
+        .btn-topup { width: 100%; background-color: #00ff66; color: #000; border: none; padding: 12px; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 10px; transition: 0.3s; font-size: 1.1rem; }
+        .btn-topup:hover { background-color: #00cc52; }
+    </style>
+</head>
+<body>
+    <div id="code-background"></div>
+    <script>
+        const bg = document.getElementById('code-background');
+        const chars = ['$', '฿', 'PAY', 'TOPUP', '0', '1'];
+        for (let i = 0; i < 30; i++) {
+            const stream = document.createElement('div');
+            stream.className = 'code-stream';
+            stream.style.left = Math.random() * 100 + 'vw';
+            stream.style.animationDuration = (5 + Math.random() * 10) + 's';
+            for (let j = 0; j < 15; j++) {
+                const span = document.createElement('span');
+                span.innerText = chars[Math.floor(Math.random() * chars.length)];
+                span.style.opacity = Math.random() * 0.5;
+                stream.appendChild(span);
+                stream.appendChild(document.createElement('br'));
+            }
+            bg.appendChild(stream);
+        }
+    </script>
+
+    <header>
+        <a href="index.html" style="text-decoration: none;"><h1>&#60;DevHub/&#62;</h1></a>
+        <nav><a href="index.html">← กลับหน้าแรก</a></nav>
+    </header>
+
+    <div class="topup-container">
+        <h2>ระบบเติมเงินเข้ากระเป๋า</h2>
+        <div class="balance-box">
+            ยอดเงินคงเหลือของคุณ: <br>
+            <span id="displayBalance">0</span> บาท
+        </div>
+
+        <form id="topupForm">
+            <div class="form-group">
+                <label>เลือกจำนวนเงินที่ต้องการเติม</label>
+                <select id="amount" class="form-control">
+                    <option value="50">50 บาท</option>
+                    <option value="100">100 บาท</option>
+                    <option value="300">300 บาท</option>
+                    <option value="500">500 บาท</option>
+                    <option value="1000">1,000 บาท</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>ช่องทางชำระเงิน (จำลอง QR Code / PromptPay)</label>
+                <input type="text" value="TrueMoney Wallet / PromptPay (จำลอง)" disabled style="color: #a0a0a0;">
+            </div>
+            <button type="submit" class="btn-topup">ยืนยันการเติมเงิน</button>
+        </form>
+    </div>
+
+    <script>
+        // โหลดข้อมูลยอดเงินปัจจุบัน
+        function updateBalanceView() {
+            let currentBalance = localStorage.getItem('devhub_balance') || '0';
+            document.getElementById('displayBalance').innerText = currentBalance;
+        }
+        updateBalanceView();
+
+        document.getElementById('topupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let addAmount = parseInt(document.getElementById('amount').value);
+            let currentBalance = parseInt(localStorage.getItem('devhub_balance') || '0');
+            
+            let newBalance = currentBalance + addAmount;
+            localStorage.setItem('devhub_balance', newBalance.toString());
+
+            alert(`เติมเงินสำเร็จ ${addAmount} บาท!`);
+            updateBalanceView();
+        });
+    </script>
+</body>
+</html>
