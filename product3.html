@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Template - DevHub</title>
+    <style>
+        body { font-family: 'Consolas', 'Courier New', monospace, sans-serif; margin: 0; padding: 0; color: #e0e0e0; background-color: transparent; }
+        #code-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background-color: #0b111a; pointer-events: none; }
+        .code-stream { position: absolute; top: -100px; font-size: 1.2rem; color: rgba(0, 210, 255, 0.4); white-space: nowrap; animation: fall-stream linear infinite; }
+        @keyframes fall-stream { to { transform: translateY(110vh); } }
+        header { background-color: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px); padding: 1.5rem 2rem; border-bottom: 2px solid #00d2ff; position: sticky; top: 0; z-index: 10; }
+        header h1 { margin: 0; color: #00d2ff; }
+        .container { max-width: 800px; margin: 40px auto; padding: 30px; text-align: center; background-color: rgba(30, 41, 59, 0.6); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        h2 { color: #fff; }
+        .price { font-size: 1.5rem; color: #00d2ff; font-weight: bold; margin: 20px 0; }
+        .btn-buy { background-color: transparent; color: #00d2ff; border: 1px solid #00d2ff; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 4px; display: inline-block; transition: all 0.3s; }
+        .btn-buy:hover { background-color: #00d2ff; color: #000; }
+        .back-link { display: inline-block; margin-top: 30px; color: #a0a0a0; text-decoration: none; transition: color 0.3s; }
+        .back-link:hover { color: #00d2ff; }
+    </style>
+</head>
+<body>
+    <div id="code-background"></div>
+    <script>
+        const bg = document.getElementById('code-background');
+        const chars = ['0', '1', '<', '>', '{', '}', '#', 'if', 'void', 'for', 'else', 'return', '(', ')', ';', '[', ']', '$', '!', '&', '=', '::', '//'];
+        for (let i = 0; i < 50; i++) {
+            const stream = document.createElement('div');
+            stream.className = 'code-stream';
+            stream.style.left = Math.random() * 100 + 'vw';
+            stream.style.animationDuration = (5 + Math.random() * 10) + 's';
+            for (let j = 0; j < 20; j++) {
+                const charSpan = document.createElement('span');
+                charSpan.innerText = chars[Math.floor(Math.random() * chars.length)];
+                charSpan.style.opacity = Math.random() * 0.5;
+                stream.appendChild(charSpan);
+                stream.appendChild(document.createElement('br'));
+            }
+            bg.appendChild(stream);
+        }
+    </script>
+    <header><h1>&#60;DevHub/&#62;</h1></header>
+    
+    <div class="container">
+        <h2>เทมเพลตเว็บ E-commerce (HTML/CSS)</h2>
+        <p>เทมเพลตหน้าร้านค้าออนไลน์แบบ Responsive รองรับการแสดงผลทุกหน้าจอ โค้ดสะอาด อ่านง่าย เหมาะสำหรับนักเรียนนักศึกษา</p>
+        <div class="price">฿ 150</div>
+        <a href="#" class="btn-buy">สั่งซื้อและดาวน์โหลดโค้ด</a>
+        <br>
+        <a href="index.html" class="back-link">← กลับไปหน้าแรก</a>
+    </div>
+</body>
+</html>

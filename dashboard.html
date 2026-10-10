@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard & Design - DevHub</title>
+    <style>
+        body { font-family: 'Consolas', 'Courier New', monospace, sans-serif; margin: 0; padding: 0; color: #e0e0e0; background-color: transparent; }
+        
+        /* พื้นหลังโทนสีม่วง/อินดิโก้สไตล์ Analytics & Design */
+        #code-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; background-color: #0d0814; pointer-events: none; }
+        
+        /* โค้ดที่ลอยลงมาเปลี่ยนเป็นสีม่วงนีออน */
+        .code-stream { position: absolute; top: -100px; font-size: 1.2rem; color: rgba(168, 85, 247, 0.5); white-space: nowrap; animation: fall-stream linear infinite; }
+        @keyframes fall-stream { to { transform: translateY(110vh); } }
+        
+        /* แถบเมนูด้านบน ธีมสีม่วง */
+        header { background-color: rgba(30, 30, 30, 0.8); backdrop-filter: blur(5px); padding: 1.5rem 2rem; border-bottom: 2px solid #a855f7; position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; color: #a855f7; font-size: 1.5rem; }
+        nav a { color: #fff; text-decoration: none; margin-left: 20px; font-size: 1.1rem; transition: color 0.3s; }
+        nav a:hover, nav a.active { color: #a855f7; font-weight: bold; }
+
+        /* จัด Layout การ์ดสินค้า */
+        .grid-container { max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 0 20px; }
+        
+        .card { background-color: rgba(30, 41, 59, 0.6); border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); padding: 20px; text-align: center; transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: #a855f7; }
+        .card h2 { color: #fff; font-size: 1.3rem; margin-top: 0; }
+        .card p { font-size: 0.9rem; color: #a0a0a0; text-align: left; margin: 10px 0; line-height: 1.5; }
+        
+        .price { font-size: 1.2rem; color: #a855f7; font-weight: bold; margin: 15px 0; }
+        
+        .btn-buy { background-color: transparent; color: #a855f7; border: 1px solid #a855f7; padding: 8px 15px; text-decoration: none; border-radius: 4px; display: inline-block; transition: all 0.3s; }
+        .btn-buy:hover { background-color: #a855f7; color: #000; }
+    </style>
+</head>
+<body>
+    <div id="code-background"></div>
+    <script>
+        const bg = document.getElementById('code-background');
+        const chars = ['Data', 'Chart', 'UX/UI', '<div>', 'CSS', 'Looker', 'Canva', 'Report', 'Filter', 'Graph'];
+        for (let i = 0; i < 40; i++) {
+            const stream = document.createElement('div');
+            stream.className = 'code-stream';
+            stream.style.left = Math.random() * 100 + 'vw';
+            stream.style.animationDuration = (5 + Math.random() * 10) + 's';
+            for (let j = 0; j < 15; j++) {
+                const charSpan = document.createElement('span');
+                charSpan.innerText = chars[Math.floor(Math.random() * chars.length)];
+                charSpan.style.opacity = Math.random() * 0.5;
+                stream.appendChild(charSpan);
+                stream.appendChild(document.createElement('br'));
+            }
+            bg.appendChild(stream);
+        }
+    </script>
+    
+    <!-- แถบเมนูด้านบน (แยกโลโก้ซ้าย เมนูขวา และกดกลับหน้าแรกได้) -->
+    <header>
+        <a href="index.html" style="text-decoration: none;">
+            <h1>&#60;DevHub/&#62;</h1>
+        </a>
+        <nav>
+            <a href="index.html">หน้าแรก</a>
+            <a href="code.html">โค้ด & สคริปต์</a>
+            <a href="hardware.html">ฮาร์ดแวร์ไอที</a>
+            <a href="dashboard.html" class="active">Dashboard & Design</a>
+        </nav>
+    </header>
+    
+    <!-- รายการสินค้าหมวด Dashboard & Design -->
+    <div class="grid-container">
+        <div class="card">
+            <h2>Looker Studio Template</h2>
+            <p>
+                • แดชบอร์ดสรุปข้อมูลแบบ Interactive<br>
+                • ตั้งค่า Scorecard และกราฟวิเคราะห์ครบถ้วน<br>
+                • มี Drop-down Controls สำหรับกรองข้อมูล
+            </p>
+            <div class="price">฿ 200</div>
+            <a href="#" class="btn-buy">ดูตัวอย่าง</a>
+        </div>
+        <div class="card">
+            <h2>Canva Assignment Layouts</h2>
+            <p>
+                • โครงสร้างไฟล์นำเสนองานและรายงานวิชาการ<br>
+                • จัดวางอย่างเป็นระเบียบ เรียบหรู ทันสมัย<br>
+                • ทดแทนการใช้โปรแกรมเอกสารแบบเดิมๆ
+            </p>
+            <div class="price">ฟรี</div>
+            <a href="#" class="btn-buy">รับลิงก์เทมเพลต</a>
+        </div>
+        <div class="card">
+            <h2>HTML/CSS Dashboard UI</h2>
+            <p>
+                • โครงสร้างเว็บฝั่ง Frontend สำหรับจัดการระบบ<br>
+                • รองรับการเชื่อมต่อฐานข้อมูลและ API<br>
+                • ปรับขนาดตัวอักษรและสีสันได้ง่าย
+            </p>
+            <div class="price">฿ 120</div>
+            <a href="#" class="btn-buy">ดูรายละเอียด</a>
+        </div>
+    </div>
+</body>
+</html>

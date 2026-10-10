@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevHub - แหล่งรวมโค้ดและเทคโนโลยีสำหรับนักพัฒนา</title>
+    <style>
+        :root {
+            --primary-color: #00d2ff;
+            --text-color: #e0e0e0;
+            --text-muted: #a0a0a0;
+        }
+
+        body {
+            font-family: 'Consolas', 'Courier New', monospace, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            background-color: transparent;
+        }
+
+        /* พื้นหลังโค้ดลอย */
+        #code-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background-color: #0b111a; 
+            pointer-events: none; 
+        }
+
+        .code-stream {
+            position: absolute;
+            top: -100px;
+            font-size: 1.2rem;
+            color: rgba(0, 210, 255, 0.4); 
+            white-space: nowrap;
+            animation: fall-stream linear infinite;
+        }
+
+        @keyframes fall-stream {
+            to { transform: translateY(110vh); }
+        }
+
+        /* Header / แถบเมนูด้านบน */
+        header {
+            background-color: rgba(30, 30, 30, 0.8); 
+            backdrop-filter: blur(5px);
+            padding: 1.2rem 2rem;
+            border-bottom: 2px solid var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary-color);
+        }
+
+        .btn-auth {
+            border: 1px solid var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            background: transparent;
+        }
+        .btn-auth:hover {
+            background-color: var(--primary-color);
+            color: #000;
+        }
+
+        .btn-reg {
+            border: 1px solid #a855f7;
+            color: #a855f7;
+            padding: 6px 12px;
+            border-radius: 4px;
+            background: rgba(168, 85, 247, 0.1);
+        }
+        .btn-reg:hover {
+            background-color: #a855f7;
+            color: #fff;
+        }
+
+        .btn-topup {
+            color: #00ff66 !important;
+            border: 1px solid #00ff66;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+        .btn-topup:hover {
+            background-color: #00ff66;
+            color: #000;
+        }
+
+        /* ส่วนเนื้อหา Hero และ Product Grid */
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem;
+            background: linear-gradient(180deg, rgba(30,30,30,0.5) 0%, rgba(18,18,18,0.2) 100%);
+        }
+
+        .hero h2 { font-size: 2.5rem; margin-bottom: 15px; color: #ffffff; }
+        .hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+            margin-bottom: 20px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .product-card {
+            background-color: rgba(30, 41, 59, 0.6); 
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3); 
+            border-color: rgba(0, 210, 255, 0.3);
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(0,0,0,0.5);
+            color: var(--primary-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .product-title { font-size: 1.2rem; margin: 10px 0; color: #fff; }
+        .product-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+        
+        .price-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .product-price { color: var(--primary-color); font-size: 1.2rem; font-weight: bold; margin: 0; }
+        
+        .btn {
+            background-color: transparent; color: var(--primary-color);
+            border: 1px solid var(--primary-color); padding: 6px 12px;
+            text-decoration: none; border-radius: 4px; transition: all 0.3s;
+        }
+        .btn:hover { background-color: var(--primary-color); color: #000; }
+
+        footer {
+            text-align: center; padding: 20px;
+            background-color: rgba(30, 30, 30, 0.8);
+            backdrop-filter: blur(5px); color: var(--text-muted);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="code-background"></div>
+    <script>
+        const bg = document.getElementById('code-background');
+        const chars = ['0', '1', '<', '>', '{', '}', '#', 'if', 'void', 'for', 'else', 'return', '(', ')'];
+        for (let i = 0; i < 50; i++) {
+            const stream = document.createElement('div');
+            stream.className = 'code-stream';
+            stream.style.left = Math.random() * 100 + 'vw';
+            stream.style.animationDuration = (5 + Math.random() * 10) + 's';
+            for (let j = 0; j < 20; j++) {
+                const charSpan = document.createElement('span');
+                charSpan.innerText = chars[Math.floor(Math.random() * chars.length)];
+                charSpan.style.opacity = Math.random() * 0.5;
+                stream.appendChild(charSpan);
+                stream.appendChild(document.createElement('br'));
+            }
+            bg.appendChild(stream);
+        }
+    </script>
+
+    <header>
+        <a href="index.html" style="text-decoration: none;">
+            <h1>&#60;DevHub&#62;</h1>
+        </a>
+        <nav id="mainNav">
+            <a href="index.html" class="active">หน้าแรก</a>
+            <a href="code.html">โค้ด & สคริปต์</a>
+            <a href="hardware.html">ฮาร์ดแวร์ไอที</a>
+            <a href="dashboard.html">Dashboard & Design</a>
+            <a href="topup.html" class="btn-topup">💰 เติมเงิน</a>
+            <a href="login.html" class="btn-auth">เข้าสู่ระบบ</a>
+            <a href="register.html" class="btn-reg">สมัครสมาชิก</a>
+        </nav>
+    </header>
+
+    <!-- สคริปต์สลับสถานะปุ่มเมื่อเข้าสู่ระบบแล้ว -->
+    <script>
+        const loggedUser = localStorage.getItem('devhub_logged_in');
+        const balance = localStorage.getItem('devhub_balance') || '0';
+        if(loggedUser) {
+            const nav = document.getElementById('mainNav');
+            nav.innerHTML = `
+                <a href="index.html" class="active">หน้าแรก</a>
+                <a href="code.html">โค้ด & สคริปต์</a>
+                <a href="hardware.html">ฮาร์ดแวร์ไอที</a>
+                <a href="dashboard.html">Dashboard & Design</a>
+                <a href="topup.html" class="btn-topup">💰 เติมเงิน</a>
+                <span style="color: #00d2ff; font-weight: bold; margin-left: 10px;">👤 ${loggedUser} (${balance}฿)</span>
+                <a href="#" id="logoutBtn" style="border: 1px solid #ff4d4d; color: #ff4d4d; padding: 6px 12px; border-radius: 4px; text-decoration: none;">ออกจากระบบ</a>
+            `;
+            document.getElementById('logoutBtn').onclick = function(e) {
+                e.preventDefault();
+                if(confirm('ต้องการออกจากระบบใช่หรือไม่?')) {
+                    localStorage.removeItem('devhub_logged_in');
+                    window.location.reload();
+                }
+            };
+        }
+    </script>
+
+    <section class="hero">
+        <h2>information Technology</h2>
+        <p>ซื้อ-ขาย Source Code, เทมเพลตเว็บไซต์, สคริปต์ตั้งค่าระบบ ไปจนถึงอุปกรณ์ฮาร์ดแวร์สำหรับโปรแกรมเมอร์</p>
+    </section>
+
+    <div class="container">
+        
+        <h3 class="section-title">โค้ดและสคริปต์ (Digital Assets)</h3>
+        <div class="product-grid">
+            <div class="product-card">
+                <span class="badge">C Programming</span>
+                <h4 class="product-title">รวมโค้ด Array & Loops</h4>
+                <p class="product-desc">โปรแกรมคำนวณเบื้องต้น พร้อม Flowchart สำหรับนำไปศึกษาหรือส่งงาน</p>
+                <div class="price-row">
+                    <p class="product-price">฿ 99</p>
+                    <a href="product1.html" class="btn">ดูรายละเอียด</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <span class="badge">Linux Config</span>
+                <h4 class="product-title">Dotfiles สำหรับ Hyprland + Waybar</h4>
+                <p class="product-desc">ไฟล์ตั้งค่า Desktop Environment สุดเท่ ปรับแต่ง Eww เรียบร้อย พร้อมใช้งาน</p>
+                <div class="price-row">
+                    <p class="product-price">ฟรี</p>
+                    <a href="product2.html" class="btn">ดาวน์โหลด</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <span class="badge">Web Dev</span>
+                <h4 class="product-title">เทมเพลตเว็บ E-commerce (HTML/CSS)</h4>
+                <p class="product-desc">โครงสร้างเว็บขายของแบบ Responsive โค้ดคลีน นำไปจัดสไตล์ต่อได้ง่าย</p>
+                <div class="price-row">
+                    <p class="product-price">฿ 150</p>
+                    <a href="product3.html" class="btn">ดูรายละเอียด</a>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="section-title">อุปกรณ์คอมพิวเตอร์ (Hardware & Gear)</h3>
+        <div class="product-grid">
+            <div class="product-card">
+                <span class="badge">Laptop (มือสอง)</span>
+                <h4 class="product-title">Lenovo Legion 5 (RTX 5060)</h4>
+                <p class="product-desc">ซีพียู i7-14650HX สภาพนางฟ้า เหมาะสำหรับรันโปรแกรมหนักๆ หรือเทรนโมเดล</p>
+                <div class="price-row">
+                    <p class="product-price">฿ 32,000</p>
+                    <a href="product4.html" class="btn">ดูรายละเอียด</a>
+                </div>
+            </div>
+
+            <div class="product-card">
+                <span class="badge">Accessory</span>
+                <h4 class="product-title">พัดลมระบายความร้อน (Cooling Pad)</h4>
+                <p class="product-desc">ช่วยลดอุณหภูมิโน้ตบุ๊กระหว่างการเรนเดอร์กราฟิกหรือเล่นเกม</p>
+                <div class="price-row">
+                    <p class="product-price">฿ 350</p>
+                    <a href="product5.html" class="btn">ดูรายละเอียด</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 DevHub Project. information Technology</p>
+    </footer>
+
+</body>
+</html>
